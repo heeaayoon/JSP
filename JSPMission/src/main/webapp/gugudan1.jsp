@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<!-- 2단에서 9단까지 수직으로 출력 -->
 <!DOCTYPE html>
 <html>
 <head>

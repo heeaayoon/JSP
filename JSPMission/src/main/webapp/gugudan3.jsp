@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<!-- 파라미터 val에 입력된 단만 출력 -->
+<!-- 파라미터가 없으면 default로 2단 출력 -->
 <%
 String val = request.getParameter("val");
 int dan;
