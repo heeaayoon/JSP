@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!-- 2~9단까지 출력을 하는데, 파라미터에 입력된 개수의 단을 수평 출력 -->
+<!-- 2~9단까지 출력을 하는데, 파라미터에 입력된 개수씩 수평 출력 -->
 <%
 String val = request.getParameter("val");
-int dan;
-if (val == null)	dan = 3;
-else				dan = Integer.parseInt(val);
+int st;
+if (val == null)	st = 3;
+else				st = Integer.parseInt(val);
 %>  
 <!DOCTYPE html>
 <html>
@@ -29,38 +29,49 @@ else				dan = Integer.parseInt(val);
 	</style>
 </head>
 <body>
-<table>
-	<%
-// 	for(int i = 2;i<=dan;i++){
-// 		out.println("<tr>");
-// 		out.println("<td>"+i+"단"+"</td>");
-// 		out.println("<td>"+i+"*"+1+"="+(i*1)+"<td/>");
-// 	}
-// 	out.println("</tr>");
-	%>
-
-
 <%
-// for(int j=1; j<=9;j++){
-// 	out.println("<tr>");
-// 	for(int i=2;i<=dan;i++){
-// 		out.println("<td>"+i+"*"+j+"="+(i*j)+"<td/>");
-// 	}
-// 	out.println("</tr>");
-// }
-%>
-</table>
-
-<%
-for(int i = 2;i<=dan;i++){
- 		out.println(i+"단\n"+"</t>");
- 	}
- 		out.println(i+"*"+1+"="+(i*1));
+for(int i = 2;i<=9;i++){
+ 	out.println(i+"단");
+	if(i==st){
 		out.println("</br>");
+	}
+ 	}
+out.println("</br>");
 
+
+for(int i = 1;i<=9;i++){
+	for(int j = 2; j<=9;j++){
+	out.println(j+"*"+i+"="+(i*j));		
+	}
+	out.println("</br>");
+}
 %>
 
 
 
+
+<table>
+<tr class = "title">
+<%
+for(int i = 2;i<=st;i++){
+ 		out.println("<td>"+i+"단"+"</td>");
+ 	}
+//out.println("</br>");
+%>
+</tr>
+
+<%
+
+for(int i = 1;i<=9;i++){
+	out.println("<tr>");
+	for(int j = 2; j<=st;j++){
+	out.println("<td>"+j+"*"+i+"="+(i*j)+"</td>");		
+	}
+	//out.println("</br>");
+	out.println("</tr>");
+}
+%>
+
+</table>
 </body>
 </html>
