@@ -19,6 +19,7 @@ public class MemberDAO extends JDBConnect{
 				"musthave", "tiger");
 		MemberDTO dto = dao.getMemberDTO("musthave","1234");
 		System.out.println(dto);
+		
 	}
 	
 	public MemberDTO getMemberDTO(String uid, String upass) {

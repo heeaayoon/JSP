@@ -5,6 +5,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%
+//1. 인구 수를 입력 받아서 그보다 많은 인구를 가진 도시를 검색해서 출력하세요. (City)
 // 파라미터 설정
 String snum = request.getParameter("num");
 

@@ -8,6 +8,7 @@ import jakarta.servlet.ServletContext;
 public class JDBConnect {
 	private Connection con;
 	
+	//Connection 객체를 외부로 반환할 수 있게 하는 메서드 
 	public Connection getCon() {
 		return con;
 	}
