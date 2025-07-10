@@ -1,5 +1,6 @@
 package model1.board;
 
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.List;
@@ -21,9 +22,9 @@ public class BoardDAO extends JDBConnect {
 		
 		String query = "select count(*) from board";
 		if(map.get("searchWord")!=null) { //Map 컬렉션에 "searchWord" 키로 저장된 값이 있는 경우에만 -> where절 추가
-			query += "where" + map.get("searchField")+" "+" Like '%"+map.get("searchWord")+ "%'";
+			query += " where " + map.get("searchField")+" "+" Like '%"+map.get("searchWord")+ "%'";
 		}
-		
+		//System.out.println("쿼리문 : "+query);
 		try {
 			Statement stmt = getCon().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
@@ -42,10 +43,10 @@ public class BoardDAO extends JDBConnect {
 		
 		String query = "select * from board";
 		if(map.get("searchWord")!=null) { //Map 컬렉션에 "searchWord" 키로 저장된 값이 있는 경우에만 -> where절 추가
-			query += "where" + map.get("searchField")+" "+" Like '%"+map.get("searchWord")+ "%'";
+			query += " where " + map.get("searchField")+" "+" Like '%"+map.get("searchWord")+ "%'";
 		}
 		query += " order by num desc"; //최근게시물이 상단에 출력되도록 내림차순 정렬
-		
+		//System.out.println("쿼리문 : "+query);
 		try {
 			Statement stmt = getCon().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
@@ -67,5 +68,114 @@ public class BoardDAO extends JDBConnect {
 			e.printStackTrace();
 		}	
 		return bbs;
+	}
+	
+	//글쓰기 메서드
+	public int insertWrite(BoardDTO dto) {
+		int result = 0; //insert에 성공한 행의 갯수를 반환
+		
+		try {
+			//insert 쿼리문 작성
+			String query = "insert into board (title,content,id,visitcount) "
+							+ " values (?,?,?,0)";
+			
+			PreparedStatement psmt = getCon().prepareStatement(query);
+			psmt.setString(1, dto.getTitle());
+			psmt.setString(2, dto.getContent());
+			psmt.setString(3, dto.getId());
+			//System.out.println("쿼리문 : "+query);
+			
+			result = psmt.executeUpdate();
+			
+		}catch(Exception e){
+			System.out.println("게시물 입력 중 예외 발생");
+			e.printStackTrace();
+		}
+		return result; //성공한 갯수 반환
+	}
+	
+	//선책한 게시물을 찾아 내용을 반환 하는 메소드(상세보기 메서드)
+	public BoardDTO selectView(String num) { //일련번호 받기
+		BoardDTO dto = new BoardDTO();
+		
+		//쿼리문
+		String query = "select B.*, M.name from member M inner join board B "
+						+" on M.id = B.id " + " where num=? ";
+		
+		try {
+			PreparedStatement psmt = getCon().prepareStatement(query);
+			psmt.setString(1, num); //파라미터에 일련번호 입력
+			ResultSet rs = psmt.executeQuery(); //쿼리 실행
+			//System.out.println("쿼리문 : "+query);
+			
+			if(rs.next()) { //dto에 값 저장
+				dto.setNum(rs.getString(1));
+				dto.setTitle(rs.getString(2));
+				dto.setContent(rs.getString("content"));
+				dto.setPostdate(rs.getDate("postdate"));
+				dto.setId(rs.getString("id"));
+				dto.setVisitcount(rs.getString(6));
+				dto.setName(rs.getString("name"));
+			}
+		}catch(Exception e){
+			System.out.println("게시물 상세보기 중 예외 발생");
+			e.printStackTrace();
+		}		
+		return dto; //저장된 내용을 전부 반환
+	}
+	
+	//선택한 게시물의 조회수를 1 증가시키는 메소드
+	public void updateVisitCount(String num) {
+		//쿼리문
+		String query = "update board set visitcount=visitcount+1 where num = ?";
+		//System.out.println("쿼리문 : "+query);
+		try {
+			PreparedStatement psmt = getCon().prepareStatement(query);
+			psmt.setString(1, num);
+			psmt.executeUpdate();
+			//System.out.println("쿼리문 : "+query);
+		}catch(Exception e) {
+			System.out.println("게시물 조회수 증가 중 예외 발생");
+			e.printStackTrace();
+		}
+	}
+	
+	//게시물 수정하는 메소드
+	public int updateEdit(BoardDTO dto) {
+		int result = 0;
+		try {
+			//insert 쿼리문 작성
+			String query = "update board set title = ?, content = ? where num = ?";
+			System.out.println("쿼리문 : "+query);
+			PreparedStatement psmt = getCon().prepareStatement(query);
+			psmt.setString(1, dto.getTitle());
+			psmt.setString(2, dto.getContent());
+			psmt.setString(3, dto.getNum());			
+			result = psmt.executeUpdate();
+			System.out.println("쿼리문 : "+query);
+			
+		}catch(Exception e){
+			System.out.println("게시물 수정 중 예외 발생");
+			e.printStackTrace();
+		}
+		return result;
+	}
+	
+	//게시물 삭제하는 메서드
+	public int deletePost(BoardDTO dto) {
+		int result = 0;
+		try {
+			//delete 쿼리문
+			String query = "delete from board where num =?";
+			
+			PreparedStatement psmt = getCon().prepareStatement(query);
+			psmt.setString(1, dto.getNum());
+			
+			result = psmt.executeUpdate();
+		}catch(Exception e) {
+			System.out.println("게시물 삭제 중 예외 발생");
+			e.printStackTrace();
+		}
+		return result;
 	}
 }
