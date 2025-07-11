@@ -70,6 +70,48 @@ public class BoardDAO extends JDBConnect {
 		return bbs;
 	}
 	
+	//페이징 기능을 지원하는 메서드
+	public List<BoardDTO> selectListPage(Map<String, Object> map){
+		List<BoardDTO> bbs = new Vector<BoardDTO>(); //결과(게시물 목록)을 담을 변수
+		
+		//쿼리문
+		String query = "select * from board ";
+		//쿼리문 검색 조건 추가 
+		//MySql 쿼리문 LIMIT [건너뛸 개수], [가져올 개수]
+		if(map.get("searchWord") != null){
+			 query+= " WHERE " + map.get("searchField")
+			 + " LIKE '%" + map.get("searchWord") + "%' ";
+			 }
+		query+= " ORDER BY num DESC limit ?,? ";
+		
+		try{
+			PreparedStatement psmt = getCon().prepareStatement(query);
+			psmt.setInt(1, (int)map.get("start"));
+			psmt.setInt(2, (int)map.get("pageSize"));
+			
+			ResultSet rs = psmt.executeQuery();
+			
+			while(rs.next()) {
+				BoardDTO dto = new BoardDTO();
+				
+				dto.setNum(rs.getString("num"));
+				dto.setTitle(rs.getString("title"));
+				dto.setContent(rs.getString("content"));
+				dto.setPostdate(rs.getDate("postdate"));
+				dto.setId(rs.getString("id"));
+				dto.setVisitcount(rs.getString("visitcount"));
+				
+				bbs.add(dto);
+			}
+			 
+		 }catch(Exception e) {
+			 System.out.println("게시물 조회 중 예외 발생 2");
+			 e.printStackTrace();
+		 }
+		
+		return bbs;
+	}
+	
 	//글쓰기 메서드
 	public int insertWrite(BoardDTO dto) {
 		int result = 0; //insert에 성공한 행의 갯수를 반환

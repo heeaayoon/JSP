@@ -22,7 +22,7 @@ public class JDBConnect {
 			//DB에 연결
 			String url = "jdbc:mysql://localhost:3306/musthave";
 			String id = "musthave";
-			String pwd = "tiger";
+			String pwd = "1234";
 			con = DriverManager.getConnection(url,id,pwd);
 			
 			System.out.println("DB연결 성공(기본 생성자)");
