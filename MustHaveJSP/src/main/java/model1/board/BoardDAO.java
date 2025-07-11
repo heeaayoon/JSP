@@ -151,12 +151,12 @@ public class BoardDAO extends JDBConnect {
 			//System.out.println("쿼리문 : "+query);
 			
 			if(rs.next()) { //dto에 값 저장
-				dto.setNum(rs.getString(1));
-				dto.setTitle(rs.getString(2));
+				dto.setNum(rs.getString("num"));
+				dto.setTitle(rs.getString("title"));
 				dto.setContent(rs.getString("content"));
 				dto.setPostdate(rs.getDate("postdate"));
 				dto.setId(rs.getString("id"));
-				dto.setVisitcount(rs.getString(6));
+				dto.setVisitcount(rs.getString("visitcount"));
 				dto.setName(rs.getString("name"));
 			}
 		}catch(Exception e){

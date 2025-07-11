@@ -53,7 +53,16 @@ dao.close();
 			</tr>
 			<tr>
 				<td>내용</td>
-				<td colspan="3" height="100"><%= dto.getContent().replace("\r\n", "<br/>") %></td>
+				<td colspan="3" height="100">
+					<%
+    				// dto나 dto.getContent()가 null이 아닌지 확인합니다.
+   					 if (dto != null && dto.getContent() != null) {
+        				// null이 아닐 때만 .replace()를 실행합니다.
+        				out.print(dto.getContent().replace("\r\n", "<br/>"));
+    				}
+    				// 만약 null이면 아무것도 출력하지 않으므로 오류가 발생하지 않습니다.
+    				%>
+				</td>
 			</tr>
 			
 			<tr>
