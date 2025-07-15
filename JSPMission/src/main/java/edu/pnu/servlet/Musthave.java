@@ -21,7 +21,7 @@ public class Musthave extends HttpServlet {
 		}else if(tbl.equals("member")) {
 			req.getRequestDispatcher("/board.jsp").forward(req, resp);
 		}else {
-			//tbl==null일 때
+			//tbl==null일 때 수정
 			
 		}
 	
