@@ -136,7 +136,7 @@ public class BoardDAO extends JDBConnect {
 		return result; //성공한 갯수 반환
 	}
 	
-	//선책한 게시물을 찾아 내용을 반환 하는 메소드(상세보기 메서드)
+	//선택한 게시물을 찾아 내용을 반환 하는 메소드(상세보기 메서드)
 	public BoardDTO selectView(String num) { //일련번호 받기
 		BoardDTO dto = new BoardDTO();
 		
