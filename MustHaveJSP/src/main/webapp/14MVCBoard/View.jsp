@@ -19,7 +19,7 @@
 
 	<!-- 게시글 내용 -->
 	<tr>
-		<td>번호</td><td>${dto.idx}</td>
+		<td>번호</td><td>${dto.idx}</td> <!-- 리퀘스트 영역에 저장한 dto 사용 -->
 		<td>작성자</td><td>${dto.name}</td>
 	</tr>
 	<tr>
@@ -31,9 +31,9 @@
 	</tr>
 	<tr>
 		<td>내용</td>
-		<td colspan="3" height="100">${dto.content}
-			<c:if test="${not empty dto.ofile and isImage eq true}">
-				<br><img src = "../Uploads/${dto.sfile}" style="max-width:100%;" />
+		<td colspan="3" height="100">${dto.content}${ dto.ofile }${ dto.sfile }
+			<c:if test="${not empty dto.ofile and isImage eq true}"> <!-- dto에 ofile이 있고, 그 파일이 isImage==true인 경우에만 -->
+				<br><img src = "../Uploads/${dto.sfile}" style="max-width:100%;" /> <!-- <img>태그가 실행됨 -->
 			</c:if>
 		</td>
 	</tr>

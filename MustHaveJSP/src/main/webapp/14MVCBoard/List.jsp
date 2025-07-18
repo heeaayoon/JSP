@@ -46,8 +46,9 @@
 				<c:otherwise> <!-- 게시물이 있을 때 -->
 					<c:forEach items="${boardLists}" var = "row" varStatus="loop">
 						<tr align="center">
-							<td>${map.totalCount-(((map.pageNum-1)*map.pageSize)+loop.index)}</td> <!-- 게시물번호 -->
-							<td><a href="../mvcboard/view.do?idx=${row.idx}">${row.title}</a></td> <!-- 제목 -->
+						<%--<td>${map.totalCount-(((map.pageNum-1)*map.pageSize)+loop.index)}</td> <!-- 게시물번호 --> --%>
+							<td>${row.idx}</td> <!-- DB의 idx를 출력하도록 수정 -->
+							<td><a href="../mvcboard/view.do?idx=${row.idx}">${row.title}</a></td> <!-- 제목을 클릭하면 viewController.java로 넘어감/게시물 일련번호(idx)를 파라미터로 사용  -->
 							<td>${row.name}</td> <!-- 작성자 아이디 -->
 							<td>${row.visitcount}</td> <!-- 조회수 -->
 							<td>${row.postdate}</td> <!-- 작성일 -->
