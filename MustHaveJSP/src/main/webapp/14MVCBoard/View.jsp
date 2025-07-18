@@ -37,7 +37,6 @@
 			</c:if>
 		</td>
 	</tr>
-	
 	<!-- 첨부파일 -->
 	<tr>
 		<td>첨부파일</td>
@@ -54,21 +53,14 @@
 	<!-- 하단메뉴(버튼) -->
 	<tr>
 		<td colspan="4" align="center">
-			<%
-			if(session.getAttribute("UserId")!= null&&session.getAttribute("UserId").toString().equals(dto.getId())){ 
-				//로그인 상태가 유지되어 있고, 로그인아이디와 dto 객체에 저장된 아이디가 일치하는지 확인
-			%>
-				<button type = "button" 
-						onclick="location.href = 'Edit.jsp?num=<%= dto.getNum() %>';">수정하기</button>
-				<button type = "button" 
-						onclick="deletePost();">삭제하기</button>
-			<% 
-			}					
-			%>	
-				<button type = "button"
-					onclick="location.href = 'List.jsp';">목록 보기</button>
-			
+			<button type = "button" 
+					onclick="location.href = '../mvcboard/pass.do?mode=edit&idx=${param.idx}';">수정하기</button>
+			<button type = "button" 
+					onclick="location.href = '../mvcboard/pass.do?mode=delete&idx=${param.idx}';">삭제하기</button>
+			<button type = "button"
+					onclick="location.href = '../mvcboard/list.do';">목록 보기</button>
 		</td>
 	</tr>
+
 </body>
 </html>

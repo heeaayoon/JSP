@@ -7,10 +7,7 @@ import java.sql.Statement;
 import java.util.List;
 import java.util.Map;
 import java.util.Vector;
-
 import common.JDBConnect;
-import fileupload.MyFileDTO;
-import model1.board.BoardDTO;
 
 public class MVCBoardDAO extends JDBConnect {
 	public MVCBoardDAO() {
@@ -126,7 +123,7 @@ public class MVCBoardDAO extends JDBConnect {
 			psmt = getCon().prepareStatement(query);
 			psmt.setString(1, idx); //파라미터에 일련번호 입력
 			rs = psmt.executeQuery(); //쿼리 실행
-			//System.out.println("쿼리문 : "+query);
+			System.out.println("쿼리문 : "+query);
 			
 			if(rs.next()) { //dto에 값 저장
 				dto.setIdx(rs.getString(1));
@@ -152,7 +149,7 @@ public class MVCBoardDAO extends JDBConnect {
 		PreparedStatement psmt = null;
 
 		//쿼리문
-		String query = "update mvcboard set visitcount=visitcount+1 where num = ?";
+		String query = "update mvcboard set visitcount=visitcount+1 where idx = ?";
 		//System.out.println("쿼리문 : "+query);
 		try {
 			psmt = getCon().prepareStatement(query);
@@ -163,6 +160,85 @@ public class MVCBoardDAO extends JDBConnect {
 			System.out.println("게시물 조회수 증가 중 예외 발생");
 			e.printStackTrace();
 		}
+	}
+	
+	//다운로드 횟수를 증가시키는 메서드
+	public void downCountPlus(String idx) {
+		PreparedStatement psmt = null;
+		String query = "update mvcboard set downcount=downcount+1 where idx = ?";
+		try {
+			psmt = getCon().prepareStatement(query);
+			psmt.setString(1, idx);
+			psmt.executeUpdate();
+			//System.out.println("쿼리문 : "+query);
+		}catch(Exception e) {
+			System.out.println("다운로드수 증가 중 예외 발생");
+			e.printStackTrace();
+		}
+	}
+	
+	//입력한 비밀번호와 저장한 게시물의 비밀번호가 일치하는지 확인하는 메서드
+	public boolean confirmPassword(String pass, String idx) {
+		PreparedStatement psmt = null;
+		boolean isCorr = true;
+		try {
+			String query = "select count(*) from mvcboard where pass = ? and idx= ? ";
+			psmt = getCon().prepareStatement(query);
+			psmt.setString(1, pass);
+			psmt.setString(2, idx);
+			ResultSet rs = psmt.executeQuery();
+			rs.next();
+			if(rs.getInt(1)==0) {
+				isCorr = false;
+			}
+			
+		}catch(Exception e) {
+			isCorr = false;
+			e.printStackTrace();
+		}
+		return isCorr;
+	}
+	
+	//해당 일련번호의 게시글을 삭제하는 메서드
+	public int deletePost(String idx) {
+		PreparedStatement psmt = null;
+		int result = 0;
+		try {
+			String query = "delete from mvcboard where idx= ?";
+			psmt = getCon().prepareStatement(query);
+			psmt.setString(1, idx);
+			psmt.executeUpdate();
+		}catch(Exception e) {
+			System.out.println("게시물 삭제 중 예외 발생");
+			e.printStackTrace();
+		}		
+		return result;
+	}
+	
+	//게시글 수정하는 메서드
+	public int updatePost(MVCBoardDTO dto) {
+		PreparedStatement psmt = null;
+		int result = 0;
+		try {
+			String query = "update mvcboard set title = ? , name = ? , content = ? , ofile = ? , sfile = ? "
+							+ " where idx= ? and pass = ?";
+			psmt = getCon().prepareStatement(query);
+			psmt.setString(1, dto.getTitle());
+			psmt.setString(2, dto.getName());
+			psmt.setString(3, dto.getContent());
+			psmt.setString(4, dto.getOfile());
+			psmt.setString(5, dto.getSfile());
+			psmt.setString(6, dto.getIdx());
+			psmt.setString(7, dto.getPass());
+			
+			result = psmt.executeUpdate(); //쿼리문 실행
+			
+		}catch(Exception e) {
+			System.out.println("게시물 수정 중 예외 발생");
+			e.printStackTrace();
+		}
+		
+		return result;
 	}
 	
 }

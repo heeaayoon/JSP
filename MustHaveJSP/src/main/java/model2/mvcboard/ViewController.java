@@ -29,7 +29,7 @@ public class ViewController extends HttpServlet {
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		
 		//게시물 불러오기
-		MVCBoardDAO dao = new MVCBoardDAO(); //DAO 객체를 생성해서 조회수 증가,상세내용보기 메서드를 호출
+		MVCBoardDAO dao = new MVCBoardDAO(); //DAO 객체를 생성해서 조회수 증가, 상세내용보기 메서드를 호출
 		String idx = req.getParameter("idx");
 		dao.updateVisitCount(idx); //조회수 1 증가
 		MVCBoardDTO dto = dao.selectView(idx); //게시물 조회
@@ -45,11 +45,11 @@ public class ViewController extends HttpServlet {
 			ext = fileName.substring(fileName.lastIndexOf(".")+1); //확장자 추출하기
 		}
 		
-		String[] mimeStr = {"png","jpg","gif"};
+		String[] mimeStr = {"PNG","png","jpg","gif"};
 		List<String> mimeList = Arrays.asList(mimeStr);
 		boolean isImage = false;
-		if(mimeList.contains(ext)) {
-			isImage = true; //이미지인지 아닌지 확인하는 작업
+		if(mimeList.contains(ext)) { //컬렉션에 포함된 확장자를 가진 이미지면
+			isImage = true; //isImage 변수를 true로 변경하기
 		}
 		
 		//dto 객체와 isImage를 request영역에 저장하고 뷰(View.jsp)로 포워딩하기
@@ -57,5 +57,4 @@ public class ViewController extends HttpServlet {
 		req.setAttribute("isImage", isImage);
 		req.getRequestDispatcher("/14MVCBoard/View.jsp").forward(req, resp);
 	}
-	
 }

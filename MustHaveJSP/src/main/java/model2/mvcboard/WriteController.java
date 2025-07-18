@@ -30,7 +30,7 @@ public class WriteController extends HttpServlet {
 	//fileupload/UploadProcess.java -> 파일업로드 처리 메서드 참조
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String saveDirectory = getServletContext().getRealPath("/Uploads"); //보관장소(sDirectory) 설정
+		String saveDirectory = getServletContext().getRealPath("/Uploads"); //보관장소(saveDirectory) 설정
 		String originalFileName = "";
 		try {
 			originalFileName = FileUtil.uploadFile(req, saveDirectory); //원래 파일명

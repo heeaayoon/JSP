@@ -47,11 +47,15 @@
 					<c:forEach items="${boardLists}" var = "row" varStatus="loop">
 						<tr align="center">
 							<td>${map.totalCount-(((map.pageNum-1)*map.pageSize)+loop.index)}</td> <!-- 게시물번호 -->
-							<td><a href="../mvcboard.view.do?idx=${row.idx}">${row.title}</a></td> <!-- 제목 -->
+							<td><a href="../mvcboard/view.do?idx=${row.idx}">${row.title}</a></td> <!-- 제목 -->
 							<td>${row.name}</td> <!-- 작성자 아이디 -->
 							<td>${row.visitcount}</td> <!-- 조회수 -->
 							<td>${row.postdate}</td> <!-- 작성일 -->
-							<td>첨부파일----여기 수정하기</td>
+							<td><!-- 첨부파일 -->
+							<c:if test="${not empty row.ofile}">
+								<a href = "../mvcboard/download.do?ofile=${row.ofile}&sfile=${row.sfile}&idx=${row.idx}">[Down]</a>
+							</c:if>
+							</td>
 						</tr>
 					</c:forEach>
 				</c:otherwise>
